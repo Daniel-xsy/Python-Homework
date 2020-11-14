@@ -25,7 +25,8 @@ tk.Button(window,text='登陆',width=10,height=1,command=None).place(x=190,y=230
 tk.Button(window,text='退出',width=10,height=1,command=None).place(x=250,y=230)
 
 canvas=tk.Canvas(window,height=100,width=94)
-image_file=tk.PhotoImage(file='hust.bmp')
+image_file=tk.PhotoImage(file='hust.gif')
+image=canvas.create_image(250,0,anchor='n',image=image_file)
 canvas.pack()
 
 window.mainloop()
