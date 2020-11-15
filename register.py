@@ -5,8 +5,6 @@ window=tk.Tk()
 window.title=('学生成绩录入系统')
 window.geometry('450x300')
 
-#var=tk.StringVar()
-
 #文字
 tk.Label(window,text='学生成绩查询系统',font=('华文行楷',20),width=30,height=2).place(x=40,y=0)
 tk.Label(window,text='用户名',width=30,height=2).place(x=-5,y=130)
@@ -30,14 +28,4 @@ image=canvas.create_image(50,-10,anchor='n',image=image_file)
 canvas.place(x=170,y=50)
 
 window.mainloop()
-'''
-t=tk.Text(window,height=3)
-
-def insert_id():
-    var=user_id.get()
-    t.insert('insert',var)
-def insert_password():
-    var=user_password.get()
-    t.insert('end',var)
-'''
 
