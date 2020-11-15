@@ -4,7 +4,7 @@ import tkinter.messagebox as tkm
 class LoginPage(object):
     def __init__(self,master=None):
         self.root=master
-        self.root.geometry('450x300')
+        #self.root.geometry('450x300')
         self.id=tk.StringVar()
         self.password=tk.StringVar()
         self.createPage()
