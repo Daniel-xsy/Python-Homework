@@ -1,14 +1,12 @@
-import tkinter as tk
+from tkinter import *
+from tkinter import ttk
+
 import login
 
-window=tk.Tk()
+root=Tk()
 #添加标题
-window.title('Student Achievement Enquiry System')
-window.geometry('550x400')
-canvas=tk.Canvas(window,height=95,width=98)
-image_file=tk.PhotoImage(file='hust.gif')
-image=canvas.create_image(50,10,anchor='n',image=image_file)
-canvas.place(x=170,y=40)
+root.title('Student Achievement Enquiry System')
 
-login.LoginPage(window)
-window.mainloop()
+root.geometry('550x400')
+login.LoginPage(root)
+root.mainloop()
