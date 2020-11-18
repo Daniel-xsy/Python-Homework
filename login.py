@@ -42,7 +42,7 @@ class LoginPage(object):
         login_frame.columnconfigure(0,weight=1)
         login_frame.rowconfigure(0,weight=1)
         login_frame.mainloop()
-    #用户名检测
+    #用户名检测是否合法
     def isLegal(self,string):
         if len(string)!=10:
             return False
@@ -61,9 +61,11 @@ class LoginPage(object):
     def register(self):
         id=self.id.get()
         password=self.password.get()
+        #检测是否有输入
         if len(id)==0 or len(password)==0:
             tkm.showerror(title='错误提示',message='学号密码不能为空')
             return 
+        #检测非法字符
         for char in password:
             if not str(char).isalnum() and not str(char)=='_':
                 tkm.showerror(title='错误提示',message='密码存在非法字符')
@@ -71,12 +73,14 @@ class LoginPage(object):
         if not self.isLegal(id):
             tkm.showerror(title='错误提示',message='该学号不存在')
             return
+        #检测是否已经=注册
         with open('user.csv','r',encoding='utf-8') as f:
             reader=csv.reader(f)
             for row in reader:
-                if id==str(row):
-                    tkm.showerror(title='错误提示',message='该用户已经注册')
+                if id==str(row[0]):
+                    tkm.showerror(title='错误提示',message='该用户已注册')
                     return
+        #写入文件
         with open('user.csv','a',encoding='utf-8',newline='') as file:
             csv_writer=csv.writer(file)
             csv_writer.writerow([id,password])
