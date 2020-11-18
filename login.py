@@ -16,7 +16,7 @@ class LoginPage(object):
         login_frame.grid()
         #frame1=ttk.Frame(login_frame)
 
-        title=ttk.Label(login_frame,text='学生成绩查询系统',font=('华文行楷',20))
+        title=ttk.Label(login_frame,text='学生成绩管理系统',font=('华文行楷',20))
         id_label=ttk.Label(login_frame,text='学号')
         pass_lable=ttk.Label(login_frame,text='密码')
 
@@ -27,8 +27,7 @@ class LoginPage(object):
         pass_entry=ttk.Entry(login_frame,textvariable=self.password,show='*',font=('Arial',14))
 
         button1=ttk.Button(login_frame,text='注册',command=self.register)
-        button2=ttk.Button(login_frame,text='登陆',command=None)
-        button3=ttk.Button(login_frame,text='退出',command=None)
+        button2=ttk.Button(login_frame,text='登陆',command=self.loginCheck)
 
         title.grid(row=1,column=3,rowspan=2,columnspan=3)
         hust_lable.grid(row=4,column=3,rowspan=2,columnspan=3,sticky=N)
@@ -38,7 +37,6 @@ class LoginPage(object):
         pass_entry.grid(row=10,column=4,rowspan=2,columnspan=2,pady=5)
         button1.grid(row=12,column=3,rowspan=2,pady=3)
         button2.grid(row=12,column=4,rowspan=2,pady=3)
-        button3.grid(row=12,column=5,rowspan=2,pady=3)
         login_frame.columnconfigure(0,weight=1)
         login_frame.rowconfigure(0,weight=1)
         login_frame.mainloop()
@@ -54,16 +52,32 @@ class LoginPage(object):
     def loginCheck(self):
         id=self.id.get()
         password=self.password.get()
-        
+        if self.isLegalUser(id,password):
+            tkm.showinfo(title='系统提示',message='登陆成功')
+            self.root.destroy()
+            #mainPage(self.root)
+            pass
+        else:
+            tkm.showerror(title='错误提示',message='账号或密码错误')
+            return
+    #检测登陆信息
     def isLegalUser(self,id,password):
-        file=open('user.csv','r',encoding='utf-8')
-
+        with open('students.csv','r',encoding='utf-8') as file:
+            reader=csv.reader(file)
+            for row in reader:
+                if id==row[0] and password==row[1]:
+                    return True
+            return False
+    #注册
     def register(self):
         id=self.id.get()
         password=self.password.get()
         #检测是否有输入
         if len(id)==0 or len(password)==0:
             tkm.showerror(title='错误提示',message='学号密码不能为空')
+            return 
+        if len(password)<6:
+            tkm.showerror(title='错误提示,',message='密码必须大于6位')
             return 
         #检测非法字符
         for char in password:
@@ -74,14 +88,14 @@ class LoginPage(object):
             tkm.showerror(title='错误提示',message='该学号不存在')
             return
         #检测是否已经=注册
-        with open('user.csv','r',encoding='utf-8') as f:
+        with open('students.csv','r',encoding='utf-8') as f:
             reader=csv.reader(f)
             for row in reader:
                 if id==str(row[0]):
                     tkm.showerror(title='错误提示',message='该用户已注册')
                     return
         #写入文件
-        with open('user.csv','a',encoding='utf-8',newline='') as file:
+        with open('students.csv','a',encoding='utf-8',newline='') as file:
             csv_writer=csv.writer(file)
             csv_writer.writerow([id,password])
         tkm.showinfo(title='系统提示',message='注册成功')
