@@ -3,17 +3,19 @@ from tkinter import ttk
 import tkinter.messagebox as tkm
 import time
 import csv
+import mainPage
 
 class LoginPage(object):
     def __init__(self,master=None):
         self.root=master
+        self.frame=ttk.Frame(self.root,padding=(10,10,10,10),relief='sunken',width=400,height=550)
         self.choice_frame=None
         self.id=StringVar()
         self.password=StringVar()
         self.name=StringVar()
         self.user=None
-        self.chicePage()
-    def chicePage(self):
+        self.choicePage()
+    def choicePage(self):
         self.choice_frame=ttk.Frame(self.root,padding=(10,10,10,10),relief='sunken',width=400,height=550)
         self.choice_frame.grid()
         text_label=ttk.Label(self.choice_frame,text='请选择您的身份')
@@ -31,28 +33,24 @@ class LoginPage(object):
         self.choice_frame.destroy()
         self.createPage()
     def createPage(self):
-        #文字
-        login_frame=ttk.Frame(self.root,padding=(10,10,10,10),relief='sunken',width=400,height=550)
-        login_frame.grid()
-        #frame1=ttk.Frame(login_frame)
-
-        title=ttk.Label(login_frame,text='学生成绩管理系统',font=('华文行楷',20))
-        name_label=ttk.Label(login_frame,text='姓名')
+        self.frame.grid()
+        title=ttk.Label(self.frame,text='学生成绩管理系统',font=('华文行楷',20))
+        name_label=ttk.Label(self.frame,text='姓名')
         if self.user=='student':
-            id_label=ttk.Label(login_frame,text='学号')
+            id_label=ttk.Label(self.frame,text='学号')
         else:
-            id_label=ttk.Label(login_frame,text='编号')
-        pass_lable=ttk.Label(login_frame,text='密码')
+            id_label=ttk.Label(self.frame,text='编号')
+        pass_lable=ttk.Label(self.frame,text='密码')
 
         image_file=PhotoImage(file='hust.gif')
-        hust_lable=ttk.Label(login_frame,image=image_file)
+        hust_lable=ttk.Label(self.frame,image=image_file)
 
-        user_entry=ttk.Entry(login_frame,textvariable=self.id,font=('Arial',14))
-        pass_entry=ttk.Entry(login_frame,textvariable=self.password,show='*',font=('Arial',14))
-        name_entry=ttk.Entry(login_frame,textvariable=self.name,font=('Arial',14))
+        user_entry=ttk.Entry(self.frame,textvariable=self.id,font=('Arial',14))
+        pass_entry=ttk.Entry(self.frame,textvariable=self.password,show='*',font=('Arial',14))
+        name_entry=ttk.Entry(self.frame,textvariable=self.name,font=('Arial',14))
 
-        button1=ttk.Button(login_frame,text='注册',command=self.register)
-        button2=ttk.Button(login_frame,text='登陆',command=self.loginCheck)
+        button1=ttk.Button(self.frame,text='注册',command=self.register)
+        button2=ttk.Button(self.frame,text='登陆',command=self.loginCheck)
 
         title.grid(row=1,column=3,rowspan=2,columnspan=3)
         hust_lable.grid(row=4,column=3,rowspan=2,columnspan=3,sticky=N)
@@ -64,9 +62,9 @@ class LoginPage(object):
         pass_entry.grid(row=12,column=4,rowspan=2,columnspan=2,pady=5)
         button1.grid(row=14,column=3,rowspan=2,pady=3)
         button2.grid(row=14,column=5,rowspan=2,pady=3)
-        login_frame.columnconfigure(0,weight=1)
-        login_frame.rowconfigure(0,weight=1)
-        login_frame.mainloop()
+        self.frame.columnconfigure(0,weight=1)
+        self.frame.rowconfigure(0,weight=1)
+        self.frame.mainloop()
     #用户名检测是否合法
     def isLegal(self,string):
         #学生
@@ -85,10 +83,12 @@ class LoginPage(object):
     def loginCheck(self):
         id=self.id.get()
         password=self.password.get()
+        user=self.user
         if self.isLegalUser(id,password):
             tkm.showinfo(title='系统提示',message='登陆成功')
-            self.root.destroy()
-            #mainPage(self.root)
+            self.frame.destroy()
+            #进入主功能界面
+            mainPage.mainPage(self.root,id,user)
             pass
         else:
             tkm.showerror(title='错误提示',message='账号或密码错误')
