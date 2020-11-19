@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import login
 
-if __name__=="__main__":  
+if __name__=="__main__":
     root=tk.Tk()
     #添加标题
     root.title('Student Grade Enquiry System')
