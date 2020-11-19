@@ -36,6 +36,7 @@ class mainPage(object):
         data=dt.classGrade()
         data_label=ttk.Label(self.infor_frame,text=data)
         return_button=ttk.Button(self.infor_frame,text='返回',command=self.return_menu)
+
         index_label.grid(row=1,column=1)
         data_label.grid(row=2,column=1,pady=10)
         return_button.grid(row=3,column=1,pady=10)
@@ -64,6 +65,7 @@ class studentPage(mainPage):
         inquire_button=ttk.Button(self.infor_frame,text='个人成绩查询',command=self.searchPage)
         class_button=ttk.Button(self.infor_frame,text='班级成绩情况',command=self.showClassData)
         return_button=ttk.Button(self.infor_frame,text='退出登陆',command=None)
+
         inquire_button.grid(row=1,column=1,padx=10,pady=10)
         class_button.grid(row=2,column=1,padx=10,pady=10)
         return_button.grid(row=3,column=1,padx=10,pady=10)
@@ -77,6 +79,7 @@ class studentPage(mainPage):
         data=dt.normalization(data)
         data_label=ttk.Label(self.infor_frame,text=data)
         return_button=ttk.Button(self.infor_frame,text='返回',command=self.return_menu)
+
         data_label.grid(row=1,column=1)
         return_button.grid(row=2,column=1)
         pass
@@ -97,7 +100,7 @@ class teacherPage(mainPage):
         self.infor_frame.pack()
         inquire_button=ttk.Button(self.infor_frame,text='学生成绩查询',command=self.searchPage)
         class_button=ttk.Button(self.infor_frame,text='班级成绩查询',command=self.showClassData)
-        input_button=ttk.Button(self.infor_frame,text='成绩录入',command=None)
+        input_button=ttk.Button(self.infor_frame,text='成绩录入',command=self.putGradePage)
         return_button=ttk.Button(self.infor_frame,text='退出登陆',command=None)
 
         inquire_button.grid(row=1,column=1,padx=10,pady=10)
@@ -135,3 +138,38 @@ class teacherPage(mainPage):
         infor_label=ttk.Label(self.infor_frame,text=data)
         infor_label.grid(row=4,column=2,pady=10)
         return
+    def putGradePage(self):
+        namelist=tk.StringVar()
+        self.infor_frame.destroy()
+        self.infor_frame=ttk.Frame(self.root,padding=(10,10,10,10),relief='sunken')
+        self.infor_frame.pack()
+        #创建滚动条
+        scrollbar=ttk.Scrollbar(self.infor_frame)
+        #获取姓名列表 (1+n)*2 n+1:学生数和第一行的标签 2:学号+姓名
+        namelist.set(dt.getNameList()[1:])
+        name_list=tk.Listbox(self.infor_frame,listvariable=namelist,\
+            height=8,yscrollcommand=scrollbar.set)
+        #将滚动条与姓名列表联动
+        scrollbar.config(command=name_list.yview)
+        return_button=ttk.Button(self.infor_frame,text='返回',command=self.returnFun)
+
+        scrollbar.grid(row=1,rowspan=2,pady=5,column=3,sticky='wns')
+        name_list.grid(row=1,column=1,columnspan=2)
+        return_button.grid(row=3,column=1,columnspan=2,sticky='n',pady=5)
+
+        #双击学生姓名触发事件
+        name_list.bind(sequence='<Double-1>',func=self.changeGrade)
+        #name_list.bind(sequence='KeyPress-enter',func=self.changeGrade)
+
+    def changeGrade(self,event):
+        #choice=event.widget.curselection()
+        self.infor_frame.destroy()
+        self.infor_frame=ttk.Frame(self.root,padding=(10,10,10,10),relief='sunken')
+        self.infor_frame.pack()
+        return_botton=ttk.Button(self.infor_frame,text='返回',\
+            command=(lambda self: self.putGradePage)(self))
+
+        return_botton.grid(row=4,column=1)
+
+        
+        
