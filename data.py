@@ -17,6 +17,7 @@ def normalization2(data):
     return string
 
 #获得单个学生/老师信息
+#这里可设置可选参数 可通过多种方式查找学生的信息 id index name
 def getInfor(id,user):
     f=pd.read_csv(user+'s.csv')
     index=list(f.keys())
@@ -86,5 +87,18 @@ def getRank(classgrade,grade):
     return rank
 
 #绘制成绩分布图
-def getPlot(self):
+def getPlot():
     pass
+
+def getNameList():
+    with open('students.csv','r',encoding='utf-8') as file:
+        reader=csv.reader(file)
+        #为获取学生数 data 为mx(n+1) n为学生数
+        data=getGradeData()
+        namelist=[None]*len(data[0])
+        count=0
+        for row in reader:
+            namelist[count]=row[0:2]
+            count+=1
+    #namelist 第一行为index 即 '学号,姓名'
+    return namelist
