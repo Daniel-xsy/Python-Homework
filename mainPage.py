@@ -162,14 +162,43 @@ class teacherPage(mainPage):
         #name_list.bind(sequence='KeyPress-enter',func=self.changeGrade)
 
     def changeGrade(self,event):
-        #choice=event.widget.curselection()
+        def fun():
+            grade_list=[None]*len(grade)
+            for i in range(len(grade)):
+                grade_list[i]=grade_var[i].get()
+            dt.writeGrade(grade_list,sequence=choice[0])
+        choice=event.widget.curselection()
         self.infor_frame.destroy()
         self.infor_frame=ttk.Frame(self.root,padding=(10,10,10,10),relief='sunken')
         self.infor_frame.pack()
-        return_botton=ttk.Button(self.infor_frame,text='返回',\
+        frame1=ttk.Frame(self.infor_frame)
+        frame2=ttk.Frame(self.infor_frame)
+        frame3=ttk.Frame(self.infor_frame)
+        frame1.grid(row=1,column=1)
+        frame2.grid(row=1,column=2,padx=5)
+        frame3.grid(row=2,column=1,columnspan=2)
+        #按照序列号获取学生信息 data为字典类型
+        data=dt.getInfor(sequence=int(choice[0]))
+        information,grade=dt.normalization3(data)
+        confirm_button=ttk.Button(frame3,text='保存',\
+            command=fun)
+        return_botton=ttk.Button(frame3,text='返回',\
             command=(lambda self: self.putGradePage)(self))
+        #输出学号、姓名、课程等提示信息
+        infor_label=ttk.Label(frame1,text=information)
+        #创建和课程项目数相同的输入框 每个输入框内默认为原课程分数
+        grade_var=[None]*len(grade)
+        entry_arr=[None]*len(grade)
+        for i in range(len(grade)):
+            grade_var[i]=tk.StringVar()
+            grade_var[i].set(str(grade[i]))
+            entry_arr[i]=ttk.Entry(frame2,textvariable=grade_var[i])
+            entry_arr[i].grid(row=i+1,column=1,columnspan=2,pady=5)
+        infor_label.grid(row=1,column=1)
+        return_botton.grid(row=1,column=2)
+        confirm_button.grid(row=1,column=1)
+        self.infor_frame.mainloop()
 
-        return_botton.grid(row=4,column=1)
 
         
         
