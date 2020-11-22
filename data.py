@@ -121,27 +121,12 @@ def getNameList():
 
 #写入数据，既可以通过学号，也可以通过csv文件中的序列
 def writeGrade(grade,id=None,sequence=None):
-    with open('students.csv','r+',encoding='utf-8',newline='') as file:
-        lines=file.readlines()
-        count=-1
-        for line in lines:
-            line=line.split(',')
-            if id==line[0] or sequence==count:
-                infor=line[0:4]
-                grade=list(grade)
-                file.seek(1+(count+1)*len(line))
-                file.write(str(infor)+str(grade))
-            count+=1
-        '''
-        reader=csv.reader(file)
-        count=-1
-        for row in reader:
-            if id==row[0] or sequence==count:
-                update=row[0:4]
-                grade=list(grade)
-                writer=csv.writer(file)
-                writer.writerow([update,grade])
-                tkm.showinfo(title='系统提示',message='保存成功')
-                return 
-            count+=1
-        '''
+    filename='students.csv'
+    data=pd.read_csv('students.csv',encoding='utf-8')
+    data['微积分'].loc[sequence]=grade[0]
+    data['线性代数'].loc[sequence]=grade[1]
+    data['Python'].loc[sequence]=grade[2]
+    data.to_csv(filename, encoding='utf-8',index=0)
+    '''
+    需要修改 data的索引值最好读出来，否则函数模块化程度不好
+    '''
