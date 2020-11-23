@@ -89,9 +89,9 @@ def getLimit(subject):
     max=subject[0]
     min=subject[0]
     for i in range(len(subject)):
-        if max<subject[i]:
+        if int(max)<int(subject[i]):
             max=subject[i]
-        elif min>subject[i]:
+        if int(min)>int(subject[i]):
             min=subject[i]
     return max,min
 
@@ -123,9 +123,12 @@ def getNameList():
 def writeGrade(grade,id=None,sequence=None):
     filename='students.csv'
     data=pd.read_csv('students.csv',encoding='utf-8')
-    data['微积分'].loc[sequence]=grade[0]
-    data['线性代数'].loc[sequence]=grade[1]
-    data['Python'].loc[sequence]=grade[2]
+    course=list(data.head())#获取课程列表
+    course=course[4:]
+    for i in range(len(course)):
+        data[course[i]].loc[sequence]=grade[i]
+        #data['线性代数'].loc[sequence]=grade[1]
+        #data['Python'].loc[sequence]=grade[2]
     data.to_csv(filename, encoding='utf-8',index=0)
     '''
     需要修改 data的索引值最好读出来，否则函数模块化程度不好
