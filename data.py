@@ -79,9 +79,13 @@ def get_csv_Column(column):
 #计算平均值
 def getAverage(subject):
     average=0.0
+    count=0
     for i in range(len(subject)):
-        average+=float(subject[i])
-    average/=len(subject)
+        if float(subject[i])>1e-6:
+            average+=float(subject[i])#不统计0分(未录入)
+        else:
+            count+=1
+    average/=(len(subject)-count)
     return average
 
 #计算最高分 最低分
@@ -91,7 +95,7 @@ def getLimit(subject):
     for i in range(len(subject)):
         if int(max)<int(subject[i]):
             max=subject[i]
-        if int(min)>int(subject[i]):
+        if int(min)>int(subject[i]) and int(subject[i])!=0:
             min=subject[i]
     return max,min
 
@@ -125,11 +129,29 @@ def writeGrade(grade,id=None,sequence=None):
     data=pd.read_csv('students.csv',encoding='utf-8')
     course=list(data.head())#获取课程列表
     course=course[4:]
+    grade=grade_limit(grade)
     for i in range(len(course)):
         data[course[i]].loc[sequence]=grade[i]
         #data['线性代数'].loc[sequence]=grade[1]
         #data['Python'].loc[sequence]=grade[2]
+    data['加权'].loc[sequence]=str(caculate_gpa(grade))
     data.to_csv(filename, encoding='utf-8',index=0)
     '''
     需要修改 data的索引值最好读出来，否则函数模块化程度不好
     '''
+
+def caculate_gpa(grade):
+    course_num=len(grade)
+    average=0.0
+    for i in range(course_num):
+        average+=float(grade[i])
+    return round(average/course_num,2)
+
+#限制修改分数的上下线
+def grade_limit(grade):
+    for i in range(len(grade)):
+        if int(grade[i])>100:
+            grade[i]='100'
+        elif int(grade[i])<0:
+            grade[i]='0'
+    return grade

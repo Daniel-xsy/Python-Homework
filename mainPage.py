@@ -48,7 +48,10 @@ class mainPage(object):
         else:
             teacherPage(self.root,self.id)      
     def quit(self):
+        self.welcome_frame.destroy
+        self.infor_frame.destroy()
         pass
+        
 
 
 #学生端界面

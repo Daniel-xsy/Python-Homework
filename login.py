@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import tkinter.messagebox as tkm
+import pandas as pd
 import time
 import csv
 import mainPage
@@ -127,7 +128,7 @@ class LoginPage(object):
                 tkm.showerror(title='错误提示',message='密码存在非法字符')
                 return 
         if not self.isLegal(id):
-            tkm.showerror(title='错误提示',message='该账号不存在')
+            tkm.showerror(title='错误提示',message='该学号不存在')
             return
         #检测是否已经注册
         with open(self.user+'s.csv','r',encoding='utf-8') as f:
@@ -139,7 +140,7 @@ class LoginPage(object):
         #写入文件
         with open(self.user+'s.csv','a',encoding='utf-8',newline='') as file:
             csv_writer=csv.writer(file)
-            csv_writer.writerow([id,name,password])
+            csv_writer.writerow([id,name,password,0,0,0,0])
         tkm.showinfo(title='系统提示',message='注册成功')
         return True
     
