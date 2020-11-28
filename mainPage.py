@@ -67,11 +67,9 @@ class studentPage(mainPage):
         self.infor_frame.pack()
         inquire_button=ttk.Button(self.infor_frame,text='个人成绩查询',command=self.searchPage)
         class_button=ttk.Button(self.infor_frame,text='班级成绩情况',command=self.showClassData)
-        return_button=ttk.Button(self.infor_frame,text='退出登陆',command=None)
 
         inquire_button.grid(row=1,column=1,padx=10,pady=10)
         class_button.grid(row=2,column=1,padx=10,pady=10)
-        return_button.grid(row=3,column=1,padx=10,pady=10)
         self.infor_frame.mainloop()
     def searchPage(self):
         #销毁前一次界面
@@ -104,12 +102,10 @@ class teacherPage(mainPage):
         inquire_button=ttk.Button(self.infor_frame,text='学生成绩查询',command=self.searchPage)
         class_button=ttk.Button(self.infor_frame,text='班级成绩查询',command=self.showClassData)
         input_button=ttk.Button(self.infor_frame,text='成绩录入',command=self.putGradePage)
-        return_button=ttk.Button(self.infor_frame,text='退出登陆',command=None)
 
         inquire_button.grid(row=1,column=1,padx=10,pady=10)
         class_button.grid(row=2,column=1,padx=10,pady=10)
         input_button.grid(row=3,column=1,padx=10,pady=10)
-        return_button.grid(row=4,column=1,padx=10,pady=10)
         self.infor_frame.mainloop()
     def returnFun(self):
         self.infor_frame.destroy()
