@@ -100,14 +100,22 @@ def getLimit(subject):
     return max,min
 
 #计算排名
-def getRank(classgrade,grade):
-    classgrade=sorted(classgrade,reverse=True)
-    rank=classgrade.index(grade)
+def getRank(name=None,id=None,index=None):
+    gpa=get_csv_Column(3)#获得所有学生加权
+    #如果传入的不是序列号，需要先通过姓名或学号查找到序列号
+    if index==None:
+        with open('students.csv','r',encoding='utf-8') as f:
+            reader=csv.reader(f)
+            count=0
+            for row in reader:
+                if name==row[1] or id==row[0]:
+                    index=count
+                    break
+                count+=1
+    grade=gpa[count]
+    gpa=sorted(gpa,reverse=True)
+    rank=gpa.index(grade)
     return rank
-
-#绘制成绩分布图
-def getPlot():
-    pass
 
 #获得名单
 def getNameList():
