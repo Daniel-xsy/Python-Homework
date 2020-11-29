@@ -77,12 +77,17 @@ class studentPage(mainPage):
         self.infor_frame=ttk.Frame(self.root,padding=(10,10,10,10),relief='sunken')
         self.infor_frame.pack()
         data=dt.getInfor(self.id,self.user)
+        rank=dt.getRank(id=self.id)
         data=dt.normalization(data)
         data_label=ttk.Label(self.infor_frame,text=data)
+        rank_label=ttk.Label(self.infor_frame,text='排名')
+        rank_num_label=ttk.Label(self.infor_frame,text=str(rank))
         return_button=ttk.Button(self.infor_frame,text='返回',command=self.return_menu)
 
         data_label.grid(row=1,column=1)
-        return_button.grid(row=2,column=1)
+        rank_label.grid(row=2,column=1,sticky='w',pady=10)
+        rank_num_label.grid(row=2,column=2,sticky='n',pady=10)
+        return_button.grid(row=3,column=1)
         pass
 
 
@@ -133,9 +138,12 @@ class teacherPage(mainPage):
         if data==None:
             tkm.showwarning(title='系统提示',message='未查找到任何信息')
             return
+        rank=dt.getRank(string)
         data=dt.normalization(data)
         infor_label=ttk.Label(self.infor_frame,text=data)
+        rank_label=ttk.Label(self.infor_frame,text=' 排名\t'+str(rank))
         infor_label.grid(row=4,column=2,pady=10)
+        rank_label.grid(row=5,column=2,sticky='w')
         return
     def putGradePage(self):
         namelist=tk.StringVar()
