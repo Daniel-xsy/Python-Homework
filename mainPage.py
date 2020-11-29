@@ -138,7 +138,7 @@ class teacherPage(mainPage):
         if data==None:
             tkm.showwarning(title='系统提示',message='未查找到任何信息')
             return
-        rank=dt.getRank(string)
+        rank=dt.getRank(name=string,id=string)
         data=dt.normalization(data)
         infor_label=ttk.Label(self.infor_frame,text=data)
         rank_label=ttk.Label(self.infor_frame,text=' 排名\t'+str(rank))
